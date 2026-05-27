@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberLens - Reconocimiento Web & Gestión de Vulnerabilidades</title>
+  <meta name="description" content="Mapea, Analiza y Protege tu Superficie de Ataque en tiempo real con CyberLens. Herramienta avanzada de Web Reconnaissance.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Grid Background -->
+  <div class="fixed-background" aria-hidden="true">
+    <div class="grid-overlay"></div>
+    <div class="glow-radial"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="brand">
+        <div class="logo-wrapper">
+          <i data-lucide="shield" class="logo-icon"></i>
+          <div class="logo-glow"></div>
+        </div>
+        <span class="brand-name">CyberLens</span>
+      </div>
+      
+      <div class="nav-links">
+        <a href="#scanner" class="nav-link">Scanner</a>
+        <a href="#features" class="nav-link">Características</a>
+        <a href="#tech" class="nav-link">Tecnologías</a>
+        <a href="#contact" class="nav-link">Contacto</a>
+      </div>
+
+      <a href="#scanner" class="btn btn-primary btn-nav">Comenzar</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="hero-container">
+      <div class="badge-container">
+        <i data-lucide="radar" class="badge-icon"></i>
+        <span class="badge-text">Proyecto de Ciberseguridad</span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="gradient-text">CyberLens</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Mapea, Analiza y Protege tu <span class="highlight-cyan">Superficie de Ataque</span> en tiempo real. 
+        Herramienta avanzada de Web Reconnaissance y Gestión de Vulnerabilidades.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#scanner" class="btn btn-gradient">
+          <i data-lucide="play" class="btn-icon"></i>
+          <span>Iniciar Demo</span>
+          <i data-lucide="arrow-right" class="btn-arrow"></i>
+        </a>
+        <a href="#features" class="btn btn-outline">
+          <i data-lucide="eye" class="btn-icon"></i>
+          <span>Ver Características</span>
+        </a>
+      </div>
+
+      <!-- Floating Icons -->
+      <div class="floating-icons" aria-hidden="true">
+        <div class="floating-item delay-1">
+          <i data-lucide="server"></i>
+        </div>
+        <div class="floating-item delay-2">
+          <i data-lucide="database"></i>
+        </div>
+        <div class="floating-item delay-3">
+          <i data-lucide="wifi"></i>
+        </div>
+        <div class="floating-item delay-4">
+          <i data-lucide="lock"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Scanner Section -->
+    <section id="scanner" class="scanner-section">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title gradient-title">Simulador de Escaneo</h2>
+          <p class="section-subtitle">
+            Experimenta el poder de CyberLens con nuestro simulador interactivo. 
+            Ingresa un dominio y observa el proceso de reconocimiento en acción.
+          </p>
+        </div>
+
+        <div class="scanner-grid">
+          <!-- Control Panel -->
+          <div class="panel control-panel">
+            <div class="panel-header">
+              <i data-lucide="terminal" class="panel-icon text-cyan"></i>
+              <h3 class="panel-title">Panel de Control</h3>
+            </div>
+
+            <div class="panel-body">
+              <div class="input-group">
+                <label for="domain-input" class="input-label">Dominio Objetivo</label>
+                <input
+                  type="text"
+                  id="domain-input"
+                  placeholder="ejemplo.com"
+                  class="form-input"
+                />
+              </div>
+
+              <div class="action-row">
+                <button id="btn-start-scan" class="btn btn-gradient btn-full">
+                  <i data-lucide="play" class="btn-icon"></i>
+                  <span id="btn-scan-text">Iniciar Reconocimiento</span>
+                </button>
+                <button id="btn-reset-scan" class="btn btn-icon-only" title="Reiniciar Escaneo">
+                  <i data-lucide="rotate-ccw"></i>
+                </button>
+              </div>
+
+              <!-- Progress Bar (hidden/shown dynamically) -->
+              <div id="progress-container" class="progress-container hidden">
+                <div class="progress-header">
+                  <span class="progress-label">Progreso</span>
+                  <span id="progress-percent" class="progress-percent font-mono">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                </div>
+                <div id="scan-phase-text" class="progress-status">Preparando...</div>
+              </div>
+
+              <!-- Quick Stats (hidden/shown dynamically) -->
+              <div id="quick-stats" class="quick-stats-grid hidden">
+                <div class="stat-card border-cyan">
+                  <span id="stat-subdomains" class="stat-value text-cyan">0</span>
+                  <span class="stat-label">Subdominios</span>
+                </div>
+                <div class="stat-card border-yellow">
+                  <span id="stat-ports" class="stat-value text-yellow">0</span>
+                  <span class="stat-label">Puertos Abiertos</span>
+                </div>
+                <div class="stat-card border-red">
+                  <span id="stat-vulns" class="stat-value text-red">0</span>
+                  <span class="stat-label">Vulnerabilidades</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terminal -->
+          <div class="panel terminal-panel">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="terminal-title font-mono">cyberlens@terminal</span>
+            </div>
+            <div id="terminal-body" class="terminal-body font-mono">
+              <div class="terminal-placeholder">
+                <span class="terminal-prompt">$</span> Esperando comando...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Dashboard (hidden/shown dynamically) -->
+        <div id="results-dashboard" class="results-dashboard hidden">
+          
+          <!-- Subdomains -->
+          <div class="panel result-panel">
+            <div class="panel-header">
+              <i data-lucide="globe" class="panel-icon text-cyan"></i>
+              <h4 class="panel-title">Subdominios Encontrados</h4>
+            </div>
+            <div id="subdomains-list" class="panel-list font-mono">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Ports -->
+          <div class="panel result-panel">
+            <div class="panel-header">
+              <i data-lucide="server" class="panel-icon text-yellow"></i>
+              <h4 class="panel-title">Puertos Detectados</h4>
+            </div>
+            <div id="ports-list" class="panel-list font-mono">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Vulnerabilities -->
+          <div class="panel result-panel border-red-soft">
+            <div class="panel-header">
+              <i data-lucide="alert-triangle" class="panel-icon text-red"></i>
+              <h4 class="panel-title">Vulnerabilidades</h4>
+            </div>
+            <div id="vulnerabilities-list" class="panel-list font-mono">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title gradient-title">Características Principales</h2>
+          <p class="section-subtitle">
+            Herramientas avanzadas diseñadas para proteger tu infraestructura digital
+          </p>
+        </div>
+
+        <div class="features-grid">
+          
+          <!-- Feature 1: Web Reconnaissance -->
+          <div class="feature-card" data-feature-index="0">
+            <div class="feature-glow"></div>
+            <div class="feature-top-bar"></div>
+            <div class="feature-icon-wrapper">
+              <i data-lucide="search" class="feature-icon text-cyan"></i>
+            </div>
+            <h3 class="feature-card-title">Web Reconnaissance</h3>
+            <p class="feature-card-desc">
+              Descubre subdominios ocultos, servicios expuestos y puntos de entrada mediante técnicas avanzadas de enumeración DNS, fuzzing y OSINT.
+            </p>
+            <div class="feature-details hidden">
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Enumeración DNS</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Fuzzing de subdominios</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Búsqueda OSINT</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Detección de tecnologías</span></div>
+            </div>
+            <div class="feature-footer">
+              <span>Ver más</span>
+              <i data-lucide="chevron-right" class="feature-chevron"></i>
+            </div>
+          </div>
+
+          <!-- Feature 2: Vulnerability Detection -->
+          <div class="feature-card" data-feature-index="1">
+            <div class="feature-glow"></div>
+            <div class="feature-top-bar"></div>
+            <div class="feature-icon-wrapper">
+              <i data-lucide="shield" class="feature-icon text-cyan"></i>
+            </div>
+            <h3 class="feature-card-title">Detección de Vulnerabilidades</h3>
+            <p class="feature-card-desc">
+              Identifica fallos de seguridad críticos como SQL Injection, XSS, CSRF y configuraciones inseguras en tiempo real.
+            </p>
+            <div class="feature-details hidden">
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>SQL Injection</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Cross-Site Scripting</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>CSRF Detection</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Security Misconfigurations</span></div>
+            </div>
+            <div class="feature-footer">
+              <span>Ver más</span>
+              <i data-lucide="chevron-right" class="feature-chevron"></i>
+            </div>
+          </div>
+
+          <!-- Feature 3: Attack Surface Management -->
+          <div class="feature-card" data-feature-index="2">
+            <div class="feature-glow"></div>
+            <div class="feature-top-bar"></div>
+            <div class="feature-icon-wrapper">
+              <i data-lucide="globe" class="feature-icon text-cyan"></i>
+            </div>
+            <h3 class="feature-card-title">Attack Surface Management</h3>
+            <p class="feature-card-desc">
+              Visualiza y gestiona toda tu superficie de ataque desde un dashboard centralizado con métricas y alertas.
+            </p>
+            <div class="feature-details hidden">
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Dashboard en tiempo real</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Inventario de activos</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Mapeo de riesgos</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Reportes ejecutivos</span></div>
+            </div>
+            <div class="feature-footer">
+              <span>Ver más</span>
+              <i data-lucide="chevron-right" class="feature-chevron"></i>
+            </div>
+          </div>
+
+          <!-- Feature 4: Monitoreo Continuo -->
+          <div class="feature-card" data-feature-index="3">
+            <div class="feature-glow"></div>
+            <div class="feature-top-bar"></div>
+            <div class="feature-icon-wrapper">
+              <i data-lucide="activity" class="feature-icon text-cyan"></i>
+            </div>
+            <h3 class="feature-card-title">Monitoreo Continuo</h3>
+            <p class="feature-card-desc">
+              Vigilancia 24/7 de tu perímetro digital con alertas automáticas ante nuevas amenazas o cambios sospechosos.
+            </p>
+            <div class="feature-details hidden">
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Alertas instantáneas</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Integración Slack/Email</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Histórico de cambios</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>API disponible</span></div>
+            </div>
+            <div class="feature-footer">
+              <span>Ver más</span>
+              <i data-lucide="chevron-right" class="feature-chevron"></i>
+            </div>
+          </div>
+
+          <!-- Feature 5: Automatización -->
+          <div class="feature-card" data-feature-index="4">
+            <div class="feature-glow"></div>
+            <div class="feature-top-bar"></div>
+            <div class="feature-icon-wrapper">
+              <i data-lucide="zap" class="feature-icon text-cyan"></i>
+            </div>
+            <h3 class="feature-card-title">Automatización</h3>
+            <p class="feature-card-desc">
+              Programa escaneos recurrentes, genera reportes automáticos y mantente siempre un paso adelante de los atacantes.
+            </p>
+            <div class="feature-details hidden">
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Escaneos programados</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Reportes PDF/JSON</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>CI/CD Integration</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Custom workflows</span></div>
+            </div>
+            <div class="feature-footer">
+              <span>Ver más</span>
+              <i data-lucide="chevron-right" class="feature-chevron"></i>
+            </div>
+          </div>
+
+          <!-- Feature 6: Compliance & Reporting -->
+          <div class="feature-card" data-feature-index="5">
+            <div class="feature-glow"></div>
+            <div class="feature-top-bar"></div>
+            <div class="feature-icon-wrapper">
+              <i data-lucide="lock" class="feature-icon text-cyan"></i>
+            </div>
+            <h3 class="feature-card-title">Compliance & Reporting</h3>
+            <p class="feature-card-desc">
+              Cumple con estándares como OWASP Top 10, PCI-DSS y genera reportes listos para auditorías de seguridad.
+            </p>
+            <div class="feature-details hidden">
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>OWASP Top 10</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>PCI-DSS Ready</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Reportes de cumplimiento</span></div>
+              <div class="detail-item"><i data-lucide="check-circle" class="detail-check"></i><span>Evidencias de remediación</span></div>
+            </div>
+            <div class="feature-footer">
+              <span>Ver más</span>
+              <i data-lucide="chevron-right" class="feature-chevron"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="section-container">
+        <div class="stats-grid">
+          
+          <div class="stat-item">
+            <div class="stat-icon-wrapper">
+              <i data-lucide="target" class="stat-icon text-cyan"></i>
+            </div>
+            <div class="stat-number">99.9%</div>
+            <div class="stat-desc">Precisión</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon-wrapper">
+              <i data-lucide="bug" class="stat-icon text-cyan"></i>
+            </div>
+            <div class="stat-number">500+</div>
+            <div class="stat-desc">Vulnerabilidades Detectables</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon-wrapper">
+              <i data-lucide="clock" class="stat-icon text-cyan"></i>
+            </div>
+            <div class="stat-number">24/7</div>
+            <div class="stat-desc">Monitoreo Activo</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon-wrapper">
+              <i data-lucide="zap" class="stat-icon text-cyan"></i>
+            </div>
+            <div class="stat-number">&lt;3s</div>
+            <div class="stat-desc">Tiempo de Respuesta</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="tech-section">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title gradient-title">Tecnologías Utilizadas</h2>
+          <p class="section-subtitle">
+            Stack tecnológico profesional para análisis de seguridad
+          </p>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-badge"><span class="tech-name">Python</span></div>
+          <div class="tech-badge"><span class="tech-name">Supabase</span></div>
+          <div class="tech-badge"><span class="tech-name">Vanilla HTML/CSS</span></div>
+          <div class="tech-badge"><span class="tech-name">JavaScript</span></div>
+          <div class="tech-badge"><span class="tech-name">Nmap</span></div>
+          <div class="tech-badge"><span class="tech-name">SQLMap</span></div>
+          <div class="tech-badge"><span class="tech-name">OWASP ZAP</span></div>
+          <div class="tech-badge"><span class="tech-name">Nuclei</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="cta-section">
+      <div class="section-container">
+        <div class="cta-card">
+          <!-- Conic spinning glow background effect -->
+          <div class="cta-glow-wrapper">
+            <div class="cta-conic-glow"></div>
+          </div>
+          
+          <div class="cta-content">
+            <i data-lucide="shield" class="cta-icon text-cyan"></i>
+            <h2 class="cta-title">Protege tu Infraestructura</h2>
+            <p class="cta-desc">
+              CyberLens es un proyecto de ciberseguridad desarrollado para demostrar 
+              capacidades avanzadas de reconocimiento web y detección de vulnerabilidades.
+            </p>
+            <a href="#scanner" class="btn btn-gradient">
+              <i data-lucide="play" class="btn-icon"></i>
+              <span>Probar Demo</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <i data-lucide="shield" class="footer-logo text-cyan"></i>
+        <span class="footer-title">CyberLens</span>
+      </div>
+
+      <div class="footer-social">
+        <a href="https://instagram.com/_brayanf0" target="_blank" rel="noopener noreferrer" class="social-link">
+          <i data-lucide="instagram" class="social-icon"></i>
+          <span>@_brayanf0</span>
+        </a>
+      </div>
+
+      <p class="footer-copy">
+        &copy; 2024 CyberLens. Proyecto de Ciberseguridad.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Custom Logic Script -->
+  <script src="script.js"></script>
+</body>
+</html>
