@@ -95,127 +95,525 @@
   </header>
 
   <main>
-    <!-- Scanner Section -->
+    <!-- Simulator & Lab Section -->
     <section id="scanner" class="scanner-section">
       <div class="section-container">
         <div class="section-header">
-          <h2 class="section-title gradient-title">Simulador de Escaneo</h2>
+          <h2 class="section-title gradient-title">Simuladores de Ciberseguridad</h2>
           <p class="section-subtitle">
-            Experimenta el poder de CyberLens con nuestro simulador interactivo. 
-            Ingresa un dominio y observa el proceso de reconocimiento en acción.
+            Explora de forma segura diferentes vectores de ataque y monitoreo en tiempo real con nuestros simuladores interactivos de CyberLens.
           </p>
         </div>
 
-        <div class="scanner-grid">
-          <!-- Control Panel -->
-          <div class="panel control-panel">
-            <div class="panel-header">
-              <i data-lucide="terminal" class="panel-icon text-cyan"></i>
-              <h3 class="panel-title">Panel de Control</h3>
-            </div>
-
-            <div class="panel-body">
-              <div class="input-group">
-                <label for="domain-input" class="input-label">Dominio Objetivo</label>
-                <input
-                  type="text"
-                  id="domain-input"
-                  placeholder="ejemplo.com"
-                  class="form-input"
-                />
-              </div>
-
-              <div class="action-row">
-                <button id="btn-start-scan" class="btn btn-gradient btn-full">
-                  <i data-lucide="play" class="btn-icon"></i>
-                  <span id="btn-scan-text">Iniciar Reconocimiento</span>
-                </button>
-                <button id="btn-reset-scan" class="btn btn-icon-only" title="Reiniciar Escaneo">
-                  <i data-lucide="rotate-ccw"></i>
-                </button>
-              </div>
-
-              <!-- Progress Bar (hidden/shown dynamically) -->
-              <div id="progress-container" class="progress-container hidden">
-                <div class="progress-header">
-                  <span class="progress-label">Progreso</span>
-                  <span id="progress-percent" class="progress-percent font-mono">0%</span>
-                </div>
-                <div class="progress-bar-bg">
-                  <div id="progress-bar-fill" class="progress-bar-fill"></div>
-                </div>
-                <div id="scan-phase-text" class="progress-status">Preparando...</div>
-              </div>
-
-              <!-- Quick Stats (hidden/shown dynamically) -->
-              <div id="quick-stats" class="quick-stats-grid hidden">
-                <div class="stat-card border-cyan">
-                  <span id="stat-subdomains" class="stat-value text-cyan">0</span>
-                  <span class="stat-label">Subdominios</span>
-                </div>
-                <div class="stat-card border-yellow">
-                  <span id="stat-ports" class="stat-value text-yellow">0</span>
-                  <span class="stat-label">Puertos Abiertos</span>
-                </div>
-                <div class="stat-card border-red">
-                  <span id="stat-vulns" class="stat-value text-red">0</span>
-                  <span class="stat-label">Vulnerabilidades</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Terminal -->
-          <div class="panel terminal-panel">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <span class="dot dot-red"></span>
-                <span class="dot dot-yellow"></span>
-                <span class="dot dot-green"></span>
-              </div>
-              <span class="terminal-title font-mono">cyberlens@terminal</span>
-            </div>
-            <div id="terminal-body" class="terminal-body font-mono">
-              <div class="terminal-placeholder">
-                <span class="terminal-prompt">$</span> Esperando comando...
-              </div>
-            </div>
-          </div>
+        <!-- Simulator Tabs Navigation -->
+        <div class="simulator-tabs">
+          <button class="tab-btn active" data-tab="recon">
+            <i data-lucide="radar" class="tab-icon"></i>
+            <span>Reconocimiento Web</span>
+          </button>
+          <button class="tab-btn" data-tab="qr">
+            <i data-lucide="qr-code" class="tab-icon"></i>
+            <span>QR-Jacking & Scan</span>
+          </button>
+          <button class="tab-btn" data-tab="c2">
+            <i data-lucide="terminal" class="tab-icon"></i>
+            <span>Centro C2</span>
+            <span id="c2-badge" class="badge-dot hidden"></span>
+          </button>
+          <button class="tab-btn" data-tab="sqli">
+            <i data-lucide="database" class="tab-icon"></i>
+            <span>SQL Injection Lab</span>
+          </button>
+          <button class="tab-btn" data-tab="brute">
+            <i data-lucide="shield-alert" class="tab-icon"></i>
+            <span>Fuerza Bruta Arena</span>
+          </button>
         </div>
 
-        <!-- Results Dashboard (hidden/shown dynamically) -->
-        <div id="results-dashboard" class="results-dashboard hidden">
+        <!-- Tab Content Wrapper -->
+        <div class="tab-content-wrapper">
           
-          <!-- Subdomains -->
-          <div class="panel result-panel">
-            <div class="panel-header">
-              <i data-lucide="globe" class="panel-icon text-cyan"></i>
-              <h4 class="panel-title">Subdominios Encontrados</h4>
+          <!-- TAB 1: WEB RECONNAISSANCE -->
+          <div id="tab-recon" class="tab-pane active">
+            <div class="scanner-grid">
+              <!-- Control Panel -->
+              <div class="panel control-panel">
+                <div class="panel-header">
+                  <i data-lucide="terminal" class="panel-icon text-cyan"></i>
+                  <h3 class="panel-title">Panel de Control</h3>
+                </div>
+
+                <div class="panel-body">
+                  <div class="input-group">
+                    <label for="domain-input" class="input-label">Dominio Objetivo</label>
+                    <input
+                      type="text"
+                      id="domain-input"
+                      placeholder="ejemplo.com"
+                      class="form-input"
+                    />
+                  </div>
+
+                  <div class="action-row">
+                    <button id="btn-start-scan" class="btn btn-gradient btn-full">
+                      <i data-lucide="play" class="btn-icon"></i>
+                      <span id="btn-scan-text">Iniciar Reconocimiento</span>
+                    </button>
+                    <button id="btn-reset-scan" class="btn btn-icon-only" title="Reiniciar Escaneo">
+                      <i data-lucide="rotate-ccw"></i>
+                    </button>
+                  </div>
+
+                  <!-- Progress Bar (hidden/shown dynamically) -->
+                  <div id="progress-container" class="progress-container hidden">
+                    <div class="progress-header">
+                      <span class="progress-label">Progreso</span>
+                      <span id="progress-percent" class="progress-percent font-mono">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                      <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                    </div>
+                    <div id="scan-phase-text" class="progress-status">Preparando...</div>
+                  </div>
+
+                  <!-- Quick Stats (hidden/shown dynamically) -->
+                  <div id="quick-stats" class="quick-stats-grid hidden">
+                    <div class="stat-card border-cyan">
+                      <span id="stat-subdomains" class="stat-value text-cyan">0</span>
+                      <span class="stat-label">Subdominios</span>
+                    </div>
+                    <div class="stat-card border-yellow">
+                      <span id="stat-ports" class="stat-value text-yellow">0</span>
+                      <span class="stat-label">Puertos Abiertos</span>
+                    </div>
+                    <div class="stat-card border-red">
+                      <span id="stat-vulns" class="stat-value text-red">0</span>
+                      <span class="stat-label">Vulnerabilidades</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Terminal -->
+              <div class="panel terminal-panel">
+                <div class="terminal-header">
+                  <div class="terminal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                  </div>
+                  <span class="terminal-title font-mono">cyberlens@recon-terminal</span>
+                </div>
+                <div id="terminal-body" class="terminal-body font-mono">
+                  <div class="terminal-placeholder">
+                    <span class="terminal-prompt">$</span> Esperando comando...
+                  </div>
+                </div>
+              </div>
             </div>
-            <div id="subdomains-list" class="panel-list font-mono">
-              <!-- Dynamically populated -->
+
+            <!-- Results Dashboard (hidden/shown dynamically) -->
+            <div id="results-dashboard" class="results-dashboard hidden">
+              <!-- Subdomains -->
+              <div class="panel result-panel">
+                <div class="panel-header">
+                  <i data-lucide="globe" class="panel-icon text-cyan"></i>
+                  <h4 class="panel-title">Subdominios Encontrados</h4>
+                </div>
+                <div id="subdomains-list" class="panel-list font-mono">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+
+              <!-- Ports -->
+              <div class="panel result-panel">
+                <div class="panel-header">
+                  <i data-lucide="server" class="panel-icon text-yellow"></i>
+                  <h4 class="panel-title">Puertos Detectados</h4>
+                </div>
+                <div id="ports-list" class="panel-list font-mono">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+
+              <!-- Vulnerabilities -->
+              <div class="panel result-panel border-red-soft">
+                <div class="panel-header">
+                  <i data-lucide="alert-triangle" class="panel-icon text-red"></i>
+                  <h4 class="panel-title">Vulnerabilidades</h4>
+                </div>
+                <div id="vulnerabilities-list" class="panel-list font-mono">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Ports -->
-          <div class="panel result-panel">
-            <div class="panel-header">
-              <i data-lucide="server" class="panel-icon text-yellow"></i>
-              <h4 class="panel-title">Puertos Detectados</h4>
-            </div>
-            <div id="ports-list" class="panel-list font-mono">
-              <!-- Dynamically populated -->
+          <!-- TAB 2: QR PHISHING & SCAN -->
+          <div id="tab-qr" class="tab-pane">
+            <div class="qr-simulator-grid">
+              <!-- QR Generator Panel -->
+              <div class="panel qr-generator-panel">
+                <div class="panel-header">
+                  <i data-lucide="qr-code" class="panel-icon text-cyan"></i>
+                  <h3 class="panel-title">Generador de QR Explotable</h3>
+                </div>
+                <div class="panel-body">
+                  <p class="panel-description">
+                    Crea un código QR de phishing o secuestro de sesión (QRLJacking). Genera el QR del portal falso y usa el smartphone simulado de la derecha para escanearlo.
+                  </p>
+                  
+                  <div class="input-group">
+                    <label for="qr-target-type" class="input-label">Tipo de Plantilla Insegura</label>
+                    <select id="qr-target-type" class="form-input">
+                      <option value="whatsapp">QRLJacking - WhatsApp Web Clon</option>
+                      <option value="bank">Phishing - Acceso Banca Segura</option>
+                      <option value="wifi">Ataque WiFi - Portal Captivo Inseguro</option>
+                    </select>
+                  </div>
+
+                  <div class="qr-display-container">
+                    <div class="qr-code-wrapper" id="qr-code-wrapper">
+                      <!-- Simulated QR Code Graphics with custom SVGs -->
+                      <div class="qr-neon-glow"></div>
+                      <div class="qr-graphic" id="qr-graphic-element">
+                        <!-- Dynamic SVG or SVG template representing a custom QR code -->
+                      </div>
+                      <div class="qr-status-overlay hidden" id="qr-status-overlay">
+                        <i data-lucide="refresh-cw" class="spinner-icon animate-spin"></i>
+                        <span class="font-mono text-cyan">ESPERANDO ESCANEO...</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="qr-instructions">
+                    <div class="instruction-item">
+                      <span class="step-num">1</span>
+                      <p>Selecciona una plantilla del menú superior.</p>
+                    </div>
+                    <div class="instruction-item">
+                      <span class="step-num">2</span>
+                      <p>Enciende el <b>Smartphone CyberLens</b> e inicia la cámara.</p>
+                    </div>
+                    <div class="instruction-item">
+                      <span class="step-num">3</span>
+                      <p>Alinea el teléfono con el código QR para escanearlo.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Smartphone Mockup -->
+              <div class="phone-mockup-wrapper">
+                <div class="phone-case">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-screen">
+                    <div class="phone-status-bar">
+                      <span class="phone-time font-mono">10:45 AM</span>
+                      <div class="phone-status-icons">
+                        <i data-lucide="wifi" class="status-icon"></i>
+                        <i data-lucide="battery" class="status-icon"></i>
+                      </div>
+                    </div>
+                    
+                    <!-- Phone States -->
+                    <div class="phone-state active" id="phone-state-home">
+                      <div class="phone-home-content">
+                        <div class="phone-app-grid">
+                          <button class="phone-app-btn" id="btn-phone-camera">
+                            <div class="app-icon-bg bg-gradient-camera">
+                              <i data-lucide="camera" class="app-icon"></i>
+                            </div>
+                            <span class="app-name">Cámara</span>
+                          </button>
+                          <div class="phone-app-btn opacity-50">
+                            <div class="app-icon-bg bg-gradient-bank">
+                              <i data-lucide="landmark" class="app-icon"></i>
+                            </div>
+                            <span class="app-name">Banco</span>
+                          </div>
+                          <div class="phone-app-btn opacity-50">
+                            <div class="app-icon-bg bg-gradient-chat">
+                              <i data-lucide="message-square" class="app-icon"></i>
+                            </div>
+                            <span class="app-name">Chat</span>
+                          </div>
+                          <div class="phone-app-btn opacity-50">
+                            <div class="app-icon-bg bg-gradient-settings">
+                              <i data-lucide="settings" class="app-icon"></i>
+                            </div>
+                            <span class="app-name">Ajustes</span>
+                          </div>
+                        </div>
+                        
+                        <div class="phone-wallpaper-decor">
+                          <i data-lucide="shield-check" class="wallpaper-icon"></i>
+                          <p class="wallpaper-text font-mono">SISTEMA PROTEGIDO</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="phone-state hidden" id="phone-state-camera">
+                      <div class="camera-finder">
+                        <div class="scanner-laser"></div>
+                        <div class="scan-bounds">
+                          <span class="corner top-left"></span>
+                          <span class="corner top-right"></span>
+                          <span class="corner bottom-left"></span>
+                          <span class="corner bottom-right"></span>
+                        </div>
+                        <p class="scan-guide">Apunta la cámara al código QR izquierdo</p>
+                        
+                        <button class="btn-phone-back" id="btn-camera-back">
+                          <i data-lucide="arrow-left"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="phone-state hidden" id="phone-state-browser">
+                      <div class="browser-navbar">
+                        <div class="browser-address font-mono">
+                          <i data-lucide="lock" class="address-lock text-green"></i>
+                          <span id="browser-url-text">https://secure.bank-verification.com</span>
+                        </div>
+                      </div>
+                      <div class="browser-viewport" id="browser-viewport-content">
+                        <!-- Dynamic Phishing Page content goes here -->
+                      </div>
+                    </div>
+
+                    <div class="phone-state hidden" id="phone-state-compromised">
+                      <div class="compromised-screen">
+                        <div class="alert-icon-wrapper">
+                          <i data-lucide="skull" class="compromised-icon animate-pulse text-red"></i>
+                        </div>
+                        <h4 class="compromised-title font-mono text-red">DEVICE EXPLOITED</h4>
+                        <p class="compromised-text font-mono">
+                          Conexión interceptada. Sesión redirigida al centro de mando C2 de CyberLens.
+                        </p>
+                        <div class="compromised-data-flow">
+                          <div class="data-pulse-dot"></div>
+                        </div>
+                        <span class="compromised-footer font-mono">HOST: cyberlens_agent_v1.0</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-home-button" id="btn-phone-home"></div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Vulnerabilities -->
-          <div class="panel result-panel border-red-soft">
-            <div class="panel-header">
-              <i data-lucide="alert-triangle" class="panel-icon text-red"></i>
-              <h4 class="panel-title">Vulnerabilidades</h4>
+          <!-- TAB 3: COMMAND & CONTROL (C2) CENTER -->
+          <div id="tab-c2" class="tab-pane">
+            <div class="c2-grid">
+              <!-- C2 Agent List -->
+              <div class="panel c2-agents-panel">
+                <div class="panel-header">
+                  <i data-lucide="network" class="panel-icon text-cyan"></i>
+                  <h3 class="panel-title">Dispositivos Comprometidos</h3>
+                </div>
+                <div class="panel-body">
+                  <div class="agents-table-wrapper">
+                    <table class="agents-table">
+                      <thead>
+                        <tr>
+                          <th>Agente ID</th>
+                          <th>IP Pública</th>
+                          <th>Dispositivo</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody id="c2-agents-list">
+                        <!-- Dynamically filled with active agents -->
+                        <tr id="c2-no-agents-row">
+                          <td colspan="4" class="table-placeholder font-mono text-muted text-center">
+                            Ningún dispositivo comprometido actualmente...<br>
+                            ¡Usa el simulador QR para comprometer un dispositivo!
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="c2-info-card border-cyan">
+                    <i data-lucide="info" class="text-cyan"></i>
+                    <p class="info-text">
+                      Una vez que un dispositivo escanea el código QR malicioso de CyberLens, se inyecta una sesión activa permanente que se registra en este panel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- C2 Remote Terminal Shell -->
+              <div class="panel c2-shell-panel">
+                <div class="terminal-header">
+                  <div class="terminal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                  </div>
+                  <span class="terminal-title font-mono" id="c2-shell-title">cyberlens@c2-console: (sin agente)</span>
+                </div>
+                <div id="c2-terminal-body" class="c2-terminal-body font-mono">
+                  <div class="terminal-placeholder">
+                    Selecciona un agente de la lista de la izquierda para abrir una consola interactiva...
+                  </div>
+                </div>
+                
+                <!-- Quick Commands Row -->
+                <div class="quick-commands-bar hidden" id="c2-commands-bar">
+                  <span class="bar-label font-mono">Comandos:</span>
+                  <button class="btn btn-outline btn-c2-cmd" data-cmd="sysinfo">sysinfo</button>
+                  <button class="btn btn-outline btn-c2-cmd text-yellow" data-cmd="geolocate">geolocate</button>
+                  <button class="btn btn-outline btn-c2-cmd text-orange" data-cmd="dump_sms">dump_sms</button>
+                  <button class="btn btn-outline btn-c2-cmd text-red" data-cmd="trigger_alarm">alarm</button>
+                </div>
+              </div>
             </div>
-            <div id="vulnerabilities-list" class="panel-list font-mono">
-              <!-- Dynamically populated -->
+          </div>
+
+          <!-- TAB 4: SQL INJECTION LAB -->
+          <div id="tab-sqli" class="tab-pane">
+            <div class="sqli-grid">
+              <!-- Input Panel -->
+              <div class="panel sqli-control-panel">
+                <div class="panel-header">
+                  <i data-lucide="database" class="panel-icon text-cyan"></i>
+                  <h3 class="panel-title">Vulnerabilidad de Inyección SQL</h3>
+                </div>
+                <div class="panel-body">
+                  <p class="panel-description">
+                    Modifica el campo de inicio de sesión de administrador. Intenta inyectar caracteres de control SQL (como `' OR '1'='1`) para anular la validación lógica del backend.
+                  </p>
+                  
+                  <div class="input-group">
+                    <label for="sqli-username" class="input-label">Usuario Admin (Username)</label>
+                    <input type="text" id="sqli-username" class="form-input font-mono" value="admin" />
+                  </div>
+                  
+                  <div class="input-group">
+                    <label for="sqli-password" class="input-label">Contraseña (Password)</label>
+                    <input type="password" id="sqli-password" class="form-input font-mono" value="password123" />
+                  </div>
+
+                  <div class="sqli-quick-payloads">
+                    <span class="payload-label">Cargar Payload:</span>
+                    <button class="btn-payload-quick font-mono" data-payload="' OR '1'='1">Bypass Simple (' OR '1'='1)</button>
+                    <button class="btn-payload-quick font-mono" data-payload="admin' --">Comentario (admin' --)</button>
+                    <button class="btn-payload-quick font-mono" data-payload="' UNION SELECT 1,username,password FROM users --">Union Select</button>
+                  </div>
+
+                  <div class="action-row">
+                    <button id="btn-run-sqli" class="btn btn-gradient btn-full">
+                      <i data-lucide="database-backup" class="btn-icon"></i>
+                      <span>Ejecutar Consulta</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SQL Query & Database Visualization -->
+              <div class="sqli-visualizer-container">
+                <!-- Live SQL Query Display -->
+                <div class="panel sql-query-panel">
+                  <div class="panel-header">
+                    <i data-lucide="code" class="panel-icon text-yellow"></i>
+                    <h3 class="panel-title font-mono">Consulta SQL Insegura</h3>
+                  </div>
+                  <div class="panel-body">
+                    <pre class="sql-code font-mono" id="sql-query-display">SELECT * FROM users WHERE username = 'admin' AND password = 'password123';</pre>
+                  </div>
+                </div>
+
+                <!-- Database Result Panel -->
+                <div class="panel db-result-panel">
+                  <div class="panel-header">
+                    <i data-lucide="table-2" class="panel-icon text-green"></i>
+                    <h3 class="panel-title">Resultado de la Base de Datos</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div id="sqli-db-table" class="db-table-wrapper font-mono">
+                      <!-- Will display query tables here -->
+                      <div class="table-placeholder text-muted">La base de datos está inactiva. Ejecuta una consulta...</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: BRUTE FORCE ARENA -->
+          <div id="tab-brute" class="tab-pane">
+            <div class="brute-grid">
+              <!-- Controls -->
+              <div class="panel brute-control-panel">
+                <div class="panel-header">
+                  <i data-lucide="shield-alert" class="panel-icon text-cyan"></i>
+                  <h3 class="panel-title">Ataque de Fuerza Bruta</h3>
+                </div>
+                <div class="panel-body">
+                  <p class="panel-description">
+                    Simula un ataque de fuerza bruta por diccionario contra una interfaz de administración. Ajusta la velocidad y el tamaño del diccionario para ver el proceso en tiempo real.
+                  </p>
+                  
+                  <div class="input-group">
+                    <label for="brute-speed" class="input-label">Velocidad de Ataque</label>
+                    <select id="brute-speed" class="form-input">
+                      <option value="50">Rápido (50ms por contraseña)</option>
+                      <option value="150" selected>Normal (150ms por contraseña)</option>
+                      <option value="500">Lento (500ms por contraseña)</option>
+                    </select>
+                  </div>
+
+                  <div class="input-group">
+                    <label for="brute-target-user" class="input-label">Usuario Objetivo</label>
+                    <input type="text" id="brute-target-user" class="form-input" value="root" />
+                  </div>
+
+                  <div class="action-row">
+                    <button id="btn-start-brute" class="btn btn-gradient btn-full">
+                      <i data-lucide="play" class="btn-icon"></i>
+                      <span id="btn-brute-text">Iniciar Ataque</span>
+                    </button>
+                    <button id="btn-reset-brute" class="btn btn-icon-only">
+                      <i data-lucide="rotate-ccw"></i>
+                    </button>
+                  </div>
+
+                  <!-- Statistics Display -->
+                  <div id="brute-stats" class="brute-stats-box hidden font-mono">
+                    <div class="brute-stat-row">
+                      <span>Intentos totales:</span>
+                      <span id="brute-attempts-count" class="text-cyan">0</span>
+                    </div>
+                    <div class="brute-stat-row">
+                      <span>Velocidad promedio:</span>
+                      <span id="brute-attempts-speed" class="text-yellow">0 / seg</span>
+                    </div>
+                    <div class="brute-stat-row">
+                      <span>Estado:</span>
+                      <span id="brute-status-indicator" class="text-green">PROCESANDO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dictionary Attack Screen -->
+              <div class="panel brute-terminal-panel">
+                <div class="terminal-header">
+                  <div class="terminal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                  </div>
+                  <span class="terminal-title font-mono">hydra@bruteforce:admin_login</span>
+                </div>
+                <div id="brute-terminal-body" class="brute-terminal-body font-mono">
+                  <div class="terminal-placeholder">
+                    $ Esperando para iniciar el ataque de diccionario...
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
